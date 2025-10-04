@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtd1nxo2gu0bq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cg74o"]
+size = Vector3(100, 2, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwcm7"]
+transparency = 1
+albedo_color = Color(0.1254902, 0.40392157, 0.6509804, 0.49411765)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cd1ay"]
+material = SubResource("StandardMaterial3D_xwcm7")
+size = Vector3(100, 2, 100)
+
+[node name="Sea" type="Area3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_cg74o")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_cd1ay")
+skeleton = NodePath("../CollisionShape3D")
