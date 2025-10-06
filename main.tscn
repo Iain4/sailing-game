@@ -14,10 +14,10 @@ transform = Transform3D(0.9945219, -0.104528464, 0, 0.10438521, 0.99315894, 0.05
 metadata/_edit_lock_ = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.8416201, -0.37191197, 0.39160824, 0.12010863, 0.8358407, 0.5356716, -0.5265448, -0.40379643, 0.7481302, 0, 0, 0)
+transform = Transform3D(0.58065057, -0.2697913, 0.7681519, -0.06587284, 0.92483705, 0.37461615, -0.81148356, -0.26812145, 0.51923525, 0, 0, 0)
 
 [node name="CameraPivot" type="Marker3D" parent="."]
-transform = Transform3D(0.9945219, -0.0739128, -0.073912784, 0.10438521, 0.6652624, 0.7392765, -0.0054705977, -0.7429421, 0.6693334, 0.37669086, 6.227474, 4.732901)
+transform = Transform3D(1, 0, 0, 0, 0.9099613, 0.41469324, 0, -0.41469324, 0.9099613, 0.37669086, 6.227474, 4.732901)
 script = ExtResource("3_h2yge")
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]

@@ -20,15 +20,11 @@ func _process(delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	submersedness = 0
 	for p in probes:
 		var depth = water_level - p.global_position.y
 		if depth > 0:
 			submersedness += 1
-			if depth > 2:
-				depth = 2
-			apply_force(Vector3.UP * boyancy * depth, p.global_position)
-	submersedness = submersedness / probes.size()
+			apply_force(Vector3.UP * boyancy, p.global_position)
 
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
