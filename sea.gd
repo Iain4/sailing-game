@@ -1,26 +1,24 @@
 extends Area3D
 
-@onready var shape = HeightMapShape3D
-@export var width = 20
-@export var depth = 20 # not acctually how deap the sea is at some point
-var period = 1
+var material: ShaderMaterial;
+var time = 0.0;
+var tex_1: NoiseTexture2D;
+var tex_2: NoiseTexture2D;
+var uv_scale_1: Vector2;
+var uv_scale_2: Vector2;
+var wave_height: float;
 
-func array_index_2d(row, col, num_rows=width, num_cols=depth) -> int:
-	return row * num_cols + col * num_rows
-	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$WaveCollision.shape.map_width = width
-	$WaveCollision.shape.map_depth = depth
+	material = $ShaderMesh.mesh.surface_get_material(0)
+	time = material.get_shader_parameter("time");
+	tex_1 = material.get_shader_parameter("tex_1");
+	tex_2 = material.get_shader_parameter("tex_2");
+	wave_height = material.get_shader_parameter("wave_height");
+	uv_scale_1 = material.get_shader_parameter("uv_scale_1");
+	uv_scale_2 = material.get_shader_parameter("uv_scale_2");
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
-	#for row in range(width):
-		#for col in range(depth):
-	for i in range($WaveCollision.shape.map_data.size()):
-		$WaveCollision.shape.map_data.set(
-			i,
-			sin(i + delta*period)*10
-		)
+	pass
