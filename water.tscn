@@ -1,39 +1,67 @@
-[gd_scene load_steps=10 format=3 uid="uid://dtd1nxo2gu0bq"]
+[gd_scene load_steps=15 format=3 uid="uid://dtd1nxo2gu0bq"]
 
 [ext_resource type="Script" uid="uid://rf7f1v4x2xmx" path="res://water.gd" id="1_xwcm7"]
 [ext_resource type="Shader" uid="uid://cfakfoi1vq7d1" path="res://water_shader.gdshader" id="2_cd1ay"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_6oag4"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7wcun"]
+noise_type = 2
+fractal_type = 0
+cellular_distance_function = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dcmoc"]
+noise = SubResource("FastNoiseLite_7wcun")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qmoj4"]
+noise_type = 2
+seed = 1
+frequency = 0.009
+fractal_type = 0
+cellular_distance_function = 1
+cellular_jitter = 0.9
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x4ob8"]
+noise = SubResource("FastNoiseLite_qmoj4")
+seamless = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_7wcun"]
+radius = 0.1
+height = 0.1
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7wcun"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dcmoc"]
 noise_type = 2
 seed = 1
 fractal_type = 0
 cellular_distance_function = 1
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mehw6"]
-noise = SubResource("FastNoiseLite_6oag4")
+noise = SubResource("FastNoiseLite_dcmoc")
 seamless = true
 normalize = false
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_cytmc"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_x4ob8"]
 noise_type = 2
-seed = 10
-frequency = 0.011
+seed = 1
+frequency = 0.009
 fractal_type = 0
 cellular_distance_function = 1
+cellular_jitter = 0.9
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lotjo"]
-noise = SubResource("FastNoiseLite_cytmc")
+noise = SubResource("FastNoiseLite_x4ob8")
 seamless = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mehw6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_746c1"]
 render_priority = 0
 shader = ExtResource("2_cd1ay")
 shader_parameter/time = 0.0
 shader_parameter/tex_1 = SubResource("NoiseTexture2D_mehw6")
 shader_parameter/tex_2 = SubResource("NoiseTexture2D_lotjo")
 shader_parameter/ColorParameter = Color(0, 0.266667, 0.533333, 1)
-shader_parameter/noise_scale_1 = Vector2(0.025, 0.025)
-shader_parameter/noise_scale_2 = Vector2(-0.025, -0.025)
+shader_parameter/noise_scale_1 = Vector2(10, 10)
+shader_parameter/noise_scale_2 = Vector2(-10, -10)
 shader_parameter/wave_height = 10.0
 shader_parameter/wave_speed = 0.035
 shader_parameter/fragment_power = 1.25
@@ -41,21 +69,17 @@ shader_parameter/alpha = 0.95
 shader_parameter/roughness = 0.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_lotjo"]
-material = SubResource("ShaderMaterial_mehw6")
+lightmap_size_hint = Vector2i(252, 252)
+material = SubResource("ShaderMaterial_746c1")
+add_uv2 = true
 size = Vector2(50, 50)
-subdivide_width = 99
-subdivide_depth = 99
-
-[sub_resource type="SphereMesh" id="SphereMesh_7wcun"]
-radius = 0.1
-height = 0.1
+subdivide_width = 49
+subdivide_depth = 49
 
 [node name="Water" type="Area3D"]
 script = ExtResource("1_xwcm7")
-
-[node name="ShaderMesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_lotjo")
-skeleton = NodePath("")
+tex_1 = SubResource("NoiseTexture2D_dcmoc")
+tex_2 = SubResource("NoiseTexture2D_x4ob8")
 
 [node name="Markers" type="Node3D" parent="."]
 
@@ -87,3 +111,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Markers/Marker3D5"]
 mesh = SubResource("SphereMesh_7wcun")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_7wcun")
+
+[node name="ShaderMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_lotjo")
+skeleton = NodePath("")

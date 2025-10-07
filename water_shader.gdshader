@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx, world_vertex_coords;
+//render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx;
 
 //uniform sampler2D tex_vtx_2;
 //uniform sampler2D tex_vtx_5;
@@ -7,17 +7,17 @@ uniform float time = 0.0;
 uniform sampler2D tex_1;
 uniform sampler2D tex_2;
 uniform vec4 ColorParameter : source_color = vec4(0.000000, 0.266667, 0.533333, 1.000000);
-uniform vec2 noise_scale_1 = vec2(0.025, 0.025);
-uniform vec2 noise_scale_2 = vec2(-0.025, -0.025);
-uniform float wave_height = 15.0;
-uniform float wave_speed = 0.035;
+uniform vec2 noise_scale_1;
+uniform vec2 noise_scale_2;
+uniform float wave_height;
+uniform float wave_speed;
 uniform float fragment_power = 1.25;
 uniform float alpha = 0.95;
-uniform float roughness = 0.0;
+uniform float roughness = 0.2;
 
 
 vec4 wave_noise(vec2 pos){
-	vec2 t = vec2(time);
+	vec2 t = vec2(time, time);
 
 // Texture 1
 // Texture2D for texture 1
@@ -37,21 +37,19 @@ vec4 wave_noise(vec2 pos){
 
 
 void vertex() {
-	vec3 world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	vec3 world_pos = (MODEL_MATRIX * vec4(VERTEX, 0.0)).xyz;
 	vec4 noise = wave_noise(world_pos.xz);
-
 
 // VectorOp:10
 	vec3 exponent = vec3(fragment_power);
 	vec3 c_noise = pow(noise.xyz, exponent);
-
 // VectorOp: Assigning the COLOR prop for fragment funciton
 	COLOR = vec4(c_noise, 0.0) + ColorParameter;
 
 
-// MultiplyAdd: Noise * Normal + vertex
-	vec3 noised_vertex = fma(vec3(noise.xyz), NORMAL, VERTEX);
-
+// MultiplyAdd: Noise * Normal + vertex, NORMAL just selects the y component
+	vec3 noised_vertex = noise.r * NORMAL + VERTEX;
+//VERTEX = vec3(VERTEX.x, noise.y * wave_height + VERTEX.y, VERTEX.z)
 
 // Adjusting wave height and outputing:
 	VERTEX = noised_vertex * vec3(1.0, wave_height, 1.0);
