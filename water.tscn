@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://dtd1nxo2gu0bq"]
+
+[ext_resource type="Script" uid="uid://rf7f1v4x2xmx" path="res://water.gd" id="1_xwcm7"]
+[ext_resource type="Shader" uid="uid://cfakfoi1vq7d1" path="res://water_shader.gdshader" id="2_cd1ay"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6oag4"]
+noise_type = 2
+seed = 1
+fractal_type = 0
+cellular_distance_function = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mehw6"]
+noise = SubResource("FastNoiseLite_6oag4")
+seamless = true
+normalize = false
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cytmc"]
+noise_type = 2
+seed = 10
+frequency = 0.011
+fractal_type = 0
+cellular_distance_function = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lotjo"]
+noise = SubResource("FastNoiseLite_cytmc")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mehw6"]
+render_priority = 0
+shader = ExtResource("2_cd1ay")
+shader_parameter/time = 0.0
+shader_parameter/tex_1 = SubResource("NoiseTexture2D_mehw6")
+shader_parameter/tex_2 = SubResource("NoiseTexture2D_lotjo")
+shader_parameter/ColorParameter = Color(0, 0.266667, 0.533333, 1)
+shader_parameter/noise_scale_1 = Vector2(0.025, 0.025)
+shader_parameter/noise_scale_2 = Vector2(-0.025, -0.025)
+shader_parameter/wave_height = 10.0
+shader_parameter/wave_speed = 0.035
+shader_parameter/fragment_power = 1.25
+shader_parameter/alpha = 0.95
+shader_parameter/roughness = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lotjo"]
+material = SubResource("ShaderMaterial_mehw6")
+size = Vector2(50, 50)
+subdivide_width = 99
+subdivide_depth = 99
+
+[sub_resource type="SphereMesh" id="SphereMesh_7wcun"]
+radius = 0.1
+height = 0.1
+
+[node name="Water" type="Area3D"]
+script = ExtResource("1_xwcm7")
+
+[node name="ShaderMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_lotjo")
+skeleton = NodePath("")
+
+[node name="Markers" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="Markers"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Markers/Marker3D"]
+mesh = SubResource("SphereMesh_7wcun")
+
+[node name="Marker3D2" type="Marker3D" parent="Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Markers/Marker3D2"]
+mesh = SubResource("SphereMesh_7wcun")
+
+[node name="Marker3D3" type="Marker3D" parent="Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Markers/Marker3D3"]
+mesh = SubResource("SphereMesh_7wcun")
+
+[node name="Marker3D4" type="Marker3D" parent="Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Markers/Marker3D4"]
+mesh = SubResource("SphereMesh_7wcun")
+
+[node name="Marker3D5" type="Marker3D" parent="Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Markers/Marker3D5"]
+mesh = SubResource("SphereMesh_7wcun")

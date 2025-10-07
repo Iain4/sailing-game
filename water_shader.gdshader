@@ -10,14 +10,14 @@ uniform vec4 ColorParameter : source_color = vec4(0.000000, 0.266667, 0.533333, 
 uniform vec2 noise_scale_1 = vec2(0.025, 0.025);
 uniform vec2 noise_scale_2 = vec2(-0.025, -0.025);
 uniform float wave_height = 15.0;
+uniform float wave_speed = 0.035;
 uniform float fragment_power = 1.25;
 uniform float alpha = 0.95;
 uniform float roughness = 0.0;
-uniform float wave_speed = 0.035;
 
 
 vec4 wave_noise(vec2 pos){
-	vec2 t = vec2(TIME);
+	vec2 t = vec2(time);
 
 // Texture 1
 // Texture2D for texture 1
